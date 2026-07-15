@@ -1,0 +1,4 @@
+interface:
+  display_name: "WhisperKit"
+  short_description: "WhisperKitで音声認識の実装とデバッグ調査を支援します"
+  default_prompt: "Use $whisper-kit to add, debug, or document on-device transcription with WhisperKit."

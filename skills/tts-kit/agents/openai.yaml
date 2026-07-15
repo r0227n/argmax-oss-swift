@@ -1,0 +1,4 @@
+interface:
+  display_name: "TTSKit"
+  short_description: "TTSKitで音声合成の実装とデバッグ調査を支援します"
+  default_prompt: "Use $tts-kit to add, debug, or document on-device text-to-speech with TTSKit."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "SpeakerKit"
+  short_description: "SpeakerKitで話者分離の実装とデバッグ調査を支援します"
+  default_prompt: "Use $speaker-kit to add or debug speaker diarization with SpeakerKit."
