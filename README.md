@@ -444,6 +444,26 @@ try await tts.play(
 
 Other strategies include `.stream` (immediate, no buffer), `.buffered(seconds:)` (fixed pre-buffer), and `.generateFirst` (generate all audio first, then play).
 
+### Speech Decoder Mode
+
+TTSKit's default speech decoder bundles two functions, selectable via `TTSKitConfig.speechDecoderMode`:
+
+| Mode | RVQ frames / call | Audio / call | Use case |
+|------|-------------------|--------------|----------|
+| `.latencyOptimized` (default) | 1 | ~80 ms | Lowest time-to-first-audio for streaming. |
+| `.throughputOptimized` | 4 | ~320 ms | Amortizes decoder overhead for higher throughput, at the cost of a ~4× larger first-buffer latency. |
+
+```swift
+// Default: latency-optimized (lowest time-to-first-audio)
+let tts = try await TTSKit()
+
+// Opt into throughput-optimized generation
+let config = TTSKitConfig(speechDecoderMode: .throughputOptimized)
+let throughputTTS = try await TTSKit(config)
+```
+
+The mode is read once when models are loaded; set it before constructing `TTSKit` (or reload the model to switch at runtime).
+
 ### Generation Options
 
 You can customize sampling, chunking, and concurrency via `GenerationOptions`:
@@ -639,7 +659,7 @@ swift run argmax-cli diarize --help
 
 Our goal is to make this SDK better and better over time and we'd love your help! Just search the code for "TODO" for a variety of features that are yet to be built. Please refer to our [contribution guidelines](CONTRIBUTING.md) for submitting issues, pull requests, and coding standards, where we also have a public roadmap of features we are looking forward to building in the future.
 
-**External dependencies:** `Sources/ArgmaxCore/External/` contains a copy of [swift-transformers](https://github.com/huggingface/swift-transformers) (Hub and Tokenizers modules, v1.1.6) with Jinja-dependent code removed. When updating to a newer version, copy the fresh sources over that directory and re-apply the patches marked with `// Argmax-modification:` (`grep -r "Argmax-modification:" Sources/ArgmaxCore/External/`).
+**External dependencies:** `Sources/ArgmaxCore/External/` contains a copy of [swift-transformers](https://github.com/huggingface/swift-transformers) (Hub and Tokenizers modules, v1.1.6) with Jinja-dependent code removed. When updating to a newer version, copy the fresh sources over that directory and re-apply the patches marked with `// Argmax-modification:` (`grep -r "Argmax-modification:" Sources/ArgmaxCore/External/`). The matching upstream tests are vendored under `Tests/ArgmaxCoreTests/External/` using the same convention.
 
 ## License
 
